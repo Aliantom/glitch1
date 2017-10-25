@@ -11,13 +11,13 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.16.2"
+    "express": "^4.15.2"
   },
   "engines": {
-    "node": "8.x"
+    "node": "6.9.x"
   },
   "repository": {
-    "url": "https://glitch.com/edit/#!/welcome-project"
+    "url": "https://glitch.com/#!/project/welcome-project"
   },
   "license": "MIT",
   "keywords": [
