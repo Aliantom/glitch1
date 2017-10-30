@@ -114,3 +114,65 @@ if (formValidity===true) {
   scroll(0,0);
   }
 
+function validatePayment() {
+   var fieldsetValidity = true;    //this sets up a Boolean flag to control this section
+   var errorDiv = document.querySelector("#paymentInfo .errorMessage");
+   var ccNumElement = document.getElementById("ccNum");
+   var selectElements = document.querySelectorAll("#paymentInfo select");
+   var elementCount = selectElements.length;
+   var cvvElement = document.getElementById("cvv");
+   var cards = document.getElementsByName("PaymentType");
+   var currentElement;
+   try { 
+       //1.  Start by determining whether any of the option buttons have been selected (checked)
+      if (!cards[0].checked && !cards[1].checked && !cards[2].checked && !cards[3].checked) { 
+         // if none are selected, outline all of the card option buttons in red and set the fieldsetValidity flag to false
+         for (i = 0; i < 4; i++) {
+            cards[i].style.outline = "1px solid red";
+         }
+         fieldsetValidity = false;     //Boolean flag is false to trip the error handling code
+      } else {
+         for (i = 0; i < 4; i++) {
+            cards[i].style.outline = "";
+         }
+      }
+
+       //2. Now, verify that a number is entered--note that it does not validate the credit card number itself
+      if (ccNumElement.value === "") { 
+         ccNumElement.style.background = "rgb(255,233,233)";
+         fieldsetValidity = false;
+      } else {
+         ccNumElement.style.background = "white";
+      }
+        // 3.  Verify that a month and year have been selected
+      for (var i = 0; i < elementCount; i++) {
+
+         currentElement = selectElements[i];
+         if (currentElement.selectedIndex === -1) {
+            currentElement.style.border = "1px solid red";
+            fieldsetValidity = false;
+         } else {
+            currentElement.style.border = "";
+         }
+      }
+       // 4.  Did the customer type in a value in the CVV field?  Note again, that the number itself is not validated
+      if (cvvElement.value === "") { 
+         cvvElement.style.background = "rgb(255,233,233)";
+         fieldsetValidity = false;
+      } else {
+         cvvElement.style.background = "white";
+      }
+
+       //5.  If fieldsetValidity IS NOT TRUE for any reason--this is the error message to throw
+      if (!fieldsetValidity) { 
+         throw "Please complete all payment information.";
+      } else {
+         errorDiv.style.display = "none";
+      }
+   }
+   catch(msg) {
+      errorDiv.style.display = "block";
+      errorDiv.innerHTML = msg;
+      formValidity = false;
+   }
+}
