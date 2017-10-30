@@ -98,6 +98,9 @@ function validateForm(evt) {     //pg. 405 step 3-->receives the parameter "evt"
 //_____________________________________________________________________
 /* In this section, we create calls to validation functions
     --these are added one by one to illustrate different validation use cases (step 5) */
+  
+  validateAddress("billingAddress");    //adds the two functions to the validateForm() function  (see step 4 on page 412) 
+   validateAddress("deliveryAddress");   //note that both fieldsets are checked with different parameters
 //______________________________________________________________________	
 if (formValidity===true) {
     //reset the error messages so they are invisible to the user and submit the form
