@@ -33,6 +33,57 @@ var formValidity = true;   //this is a BOOLEAN FLAG used to control custom valid
     }
   }
 
+
+ /* validate create account fieldset */
+function validateCreateAccount() {
+   var errorDiv = document.querySelector("#createAccount .errorMessage");
+   var usernameElement = document.getElementById("username");
+   var pass1Element = document.getElementById("pass1");
+   var pass2Element = document.getElementById("pass2");
+   var passwordMismatch = false;     //Boolean flag for ensuring that entered passwords match
+   var invColor = "rgb(255,233,233)";
+   try {
+      // reset styles to valid state
+      usernameElement.style.background = "";
+      pass1Element.style.background = "";
+      pass2Element.style.background = "";  
+      errorDiv.style.display = "none";       
+      // 1.  Check that all the fields are filled   
+      if ((usernameElement.value !== "" && pass1Element.value !== "" && pass2Element.value !== "")) {
+         // 2.  If both are filled, do the passwords match?
+         if (pass1Element.value !== pass2Element.value) { 
+            passwordMismatch = true;   // passwords don't match
+            throw "Passwords entered do not match; please reenter.";
+         } 
+      }
+
+       /*Note that if all of the fields are blank, we assume the user did not want to create an account
+         thereby bypassing the error validation code */
+      else if (!(usernameElement.value === "" && pass1Element.value === "" && pass2Element.value === "")) {
+         // not all fields are blank
+         throw "Please complete all fields to create an account.";
+      } 
+
+   }
+   catch(msg) {
+      errorDiv.innerHTML = msg;
+      errorDiv.style.display = "block";
+      if (passwordMismatch) {
+         usernameElement.style.background = "";
+         pass1Element.style.background = invColor;
+         pass2Element.style.background = invColor;         
+      } else {
+         if (usernameElement.value === "") {
+            usernameElement.style.background = invColor;
+         }
+         if (pass1Element.value === "") {
+            pass1Element.style.background = invColor;
+         }
+         if (pass2Element.value === "") {
+            pass2Element.style.background = invColor;
+         }
+      }
+      formValidity = false;
   function createEventListeners() {
      var messageBox = document.getElementById("customText");
      if (messageBox.addEventListener) {
