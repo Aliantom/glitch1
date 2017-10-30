@@ -12,7 +12,10 @@
 
 /* Code to set the dropdown selection boxes (states & date fields) to -1, effectively closing them  Ref:  pp 373-374  */
 function removeSelectDefaults() {
-   var emptyBoxes = document.getElementsByTagName("select");  //creates an array of all the selection box elements (step 5)
+  /* global variables */
+var formValidity = true;   //this is a BOOLEAN FLAG used to control custom validation on the form 
+  
+  var emptyBoxes = document.getElementsByTagName("select");  //creates an array of all the selection box elements (step 5)
    for (var i = 0; i < emptyBoxes.length; i++) {  //loop through the selection box collection (step 6)
       emptyBoxes[i].selectedIndex = -1;  //whatever the current box is; set it to -1 (step 7)
    }
@@ -85,18 +88,26 @@ if (window.addEventListener) {
         }
       }
 
-      function createEventListeners() {
-        // "listens" for a change in the delivery month
-         var messageBox = document.getElementById("customText");
-         if (messageBox.addEventListener) {
-           messageBox.addEventListener("blur", autocheckCustom, false); 
-         } else if (messageBox.attachEvent)  {
-           messageBox.attachEvent("onblur", autocheckCustom); 
-         }
-         var same = document.getElementById("sameAddr");
-         if (same.addEventListener) {
-           same.addEventListener("click", copyBillingAddress, false)
-         } else if (same.attachEvent) {
-           same.attachEvent("onclick", copyBillingAddress);
-         }
-    }
+    /* validate form */
+function validateForm(evt) {     //pg. 405 step 3-->receives the parameter "evt"--the submit event
+  if (evt.preventDefault) {
+    evt.preventDefault(); //prevent form from submitting and returning the results form
+  }
+  formValidity = true; //reset the value for revalidation
+
+//_____________________________________________________________________
+/* In this section, we create calls to validation functions
+    --these are added one by one to illustrate different validation use cases (step 5) */
+//______________________________________________________________________	
+if (formValidity===true) {
+    //reset the error messages so they are invisible to the user and submit the form
+    document.getElementById("errorText").innerHTML = "";
+    document.getElementById("errorText").style.display = "none";
+    document.getElementsByTagName("form")[0].submit();
+  } else {
+    //if there is one or more errors, scroll up to the top where there is a generic error message displayed (errorText)
+  document.getElementById("errorText").innerHTML = "Please fix the indicated problems and resubmit your order.";
+  document.getElementById("errorText").style.display = "block";
+  scroll(0,0);
+  }
+
